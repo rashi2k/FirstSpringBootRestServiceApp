@@ -20,7 +20,6 @@ public class CountryService {
 	CountryRepository countryRepo;
 	
 	public List<Country> getAllCountries() {
-		
 		return countryRepo.findAll();
 	}
 	
@@ -30,9 +29,11 @@ public class CountryService {
 	}
 	
 	public Country getCountryByName(String name) {
+		System.err.println("ddd" + name);
 		Country country = null;
 		for(Country c :  countryRepo.findAll()) {
 			if(c.getCountryName().equalsIgnoreCase(name)) {
+			
 				country = c;
 			}
 		}
@@ -42,21 +43,24 @@ public class CountryService {
 	
 	public Country addCountry(Country country) {
 		country.setId(getMaxId() + 1);
+		System.err.println(getMaxId());
 		return countryRepo.save(country);
 	}
 	
 	
 	public Country updateCountry(int id, Country country) {
-		//Country c1 = countryMap.get(country.getId());
-		if(country.getId() > 0) { // this is fake implementation
-			countryMap.put(country.getId(), country);
+		Country c = getCountryById(id);
+		if(c != null) {
+			c.setCapital(country.getCapital());
+			c.setCountryName(country.getCountryName());
+			countryRepo.save(c);
 		}
 		
-		return country;
+		return c;
 	}
 	
 	public AddResponse deleteCountry(int id) {
-		countryMap.remove(id);
+		countryRepo.deleteById(id);
 		
 		AddResponse res = new AddResponse();
 		res.setId(id);
@@ -69,9 +73,9 @@ public class CountryService {
 	// 
 	private int getMaxId() {
 		int max = 0;
-		for(int i : countryMap.keySet()) {
-			if(i > max) {
-				max = i;
+		for(Country c : countryRepo.findAll()) {
+			if(c.getId() > max) {
+				max = c.getId();
 			}
 		}
 		
