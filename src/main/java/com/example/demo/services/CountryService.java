@@ -29,7 +29,6 @@ public class CountryService {
 	}
 	
 	public Country getCountryByName(String name) {
-		System.err.println("ddd" + name);
 		Country country = null;
 		for(Country c :  countryRepo.findAll()) {
 			if(c.getCountryName().equalsIgnoreCase(name)) {
@@ -59,13 +58,14 @@ public class CountryService {
 		return c;
 	}
 	
-	public AddResponse deleteCountry(int id) {
+	public Country deleteCountry(int id) {
+		Country country = getCountryById(id);
 		countryRepo.deleteById(id);
 		
-		AddResponse res = new AddResponse();
-		res.setId(id);
-		res.setMsg("Country is deleted..");
-		return res ;
+		
+		//res.setId(id);
+		//res.setMsg("Country is deleted..");
+		return country ;
 	}
 	
 	// key : 0 -> Country

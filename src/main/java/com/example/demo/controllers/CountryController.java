@@ -26,8 +26,14 @@ public class CountryController {
 	CountryService countryService;
 
 	@GetMapping(path = "")
-	public List<Country> getCountries() {
-		return countryService.getAllCountries();
+	
+	public ResponseEntity<List<Country>> getCountries() {
+		try {
+			List<Country> countryList = countryService.getAllCountries();
+			return new ResponseEntity<List<Country>>(countryList, HttpStatus.FOUND);
+		}catch(Exception e){
+			return new ResponseEntity<List<Country>>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping(path = "/{id}")
@@ -68,8 +74,15 @@ public class CountryController {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public AddResponse deleteCountry(@PathVariable(value = "id") int id) {
-		return countryService.deleteCountry(id);
+	public ResponseEntity<Country> deleteCountry(@PathVariable(value = "id") int id) {
+		Country country = null;
+		try {
+			country = countryService.deleteCountry(id);	
+			return new ResponseEntity<>(country, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
 	}
 
 }
