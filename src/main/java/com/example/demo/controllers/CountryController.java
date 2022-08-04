@@ -26,12 +26,11 @@ public class CountryController {
 	CountryService countryService;
 
 	@GetMapping(path = "")
-	
 	public ResponseEntity<List<Country>> getCountries() {
 		try {
 			List<Country> countryList = countryService.getAllCountries();
 			return new ResponseEntity<List<Country>>(countryList, HttpStatus.FOUND);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return new ResponseEntity<List<Country>>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -58,31 +57,36 @@ public class CountryController {
 	}
 
 	@PostMapping(path = "")
-	public Country addCountry(@RequestBody Country country) {
-		return countryService.addCountry(country);
-	} 
+	public ResponseEntity<Country> addCountry(@RequestBody Country country) {
+		try {
+			Country c =  countryService.addCountry(country);
+			return new ResponseEntity<Country>(c, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<Country>(HttpStatus.CONFLICT);
+		}
+	}
 
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Country> updateCountry(@PathVariable(value = "id") int id, @RequestBody Country country) {
 		try {
-			Country c= countryService.updateCountry(id, country);
+			Country c = countryService.updateCountry(id, country);
 			return new ResponseEntity<Country>(c, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return new ResponseEntity<Country>(HttpStatus.NOT_FOUND);
-		} 
+		}
 	}
 
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Country> deleteCountry(@PathVariable(value = "id") int id) {
 		Country country = null;
 		try {
-			country = countryService.deleteCountry(id);	
+			country = countryService.deleteCountry(id);
 			return new ResponseEntity<>(country, HttpStatus.OK);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
 
 }
