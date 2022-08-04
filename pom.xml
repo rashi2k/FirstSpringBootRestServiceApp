@@ -9,6 +9,12 @@
 		<version>2.7.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	 <configuration>
+        <jdbc>
+          <driver>org.h2.Driver</driver>
+          <url>jdbc:h2:~/test</url>
+        </jdbc>
+      </configuration>
 	<groupId>com.example</groupId>
 	<artifactId>MyFirstSpringBootWebServiceApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
